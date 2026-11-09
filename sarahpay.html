@@ -1,0 +1,585 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<meta name="description" content="SarahPay lets Bangladeshi businesses accept bKash, Nagad and more on their website — no API key and no merchant account needed. Payments are auto-verified by bKash SMS." />
+<link rel="icon" href="data:," />
+<title>SarahPay — Accept bKash payments on your website</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    color-scheme: light dark;
+    --bg:#f4f7f3;
+    --bg-soft:#eaf1ea;
+    --surface:#ffffff;
+    --surface-2:#f0f4ef;
+    --ink:#0d1f18;
+    --ink-2:#3d554a;
+    --ink-3:#6b8378;
+    --line:#d9e4da;
+    --brand:#0c6b45;
+    --brand-strong:#084c31;
+    --brand-soft:#dff2e6;
+    --accent:#f2b63d;
+    --accent-soft:#fdf0d3;
+    --pink:#e2136e;
+    --pink-soft:#fde3ef;
+    --ok:#0c6b45;
+    --shadow:0 18px 44px rgba(9,45,32,.10);
+    --shadow-sm:0 6px 18px rgba(9,45,32,.08);
+    --radius:18px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0a120e;
+      --bg-soft:#0e1a14;
+      --surface:#121f18;
+      --surface-2:#17271e;
+      --ink:#eef6f0;
+      --ink-2:#b7cabd;
+      --ink-3:#84998c;
+      --line:#24382c;
+      --brand:#3ecf8e;
+      --brand-strong:#7ce3b1;
+      --brand-soft:#173528;
+      --accent:#f2b63d;
+      --accent-soft:#33270e;
+      --pink:#ff5c9e;
+      --pink-soft:#3a1426;
+      --ok:#3ecf8e;
+      --shadow:0 18px 44px rgba(0,0,0,.45);
+      --shadow-sm:0 6px 18px rgba(0,0,0,.35);
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+    font-size:16.5px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:"Sora",sans-serif;line-height:1.15;margin:0;letter-spacing:-.01em}
+  p{margin:0}
+  a{color:var(--brand);text-decoration:none}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+  /* ---------- top bar ---------- */
+  header.topbar{
+    position:sticky;top:0;z-index:50;
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar-in{display:flex;align-items:center;gap:18px;height:60px}
+  .wordmark{font-family:"Sora",sans-serif;font-weight:800;font-size:20px;color:var(--ink);display:flex;align-items:center;gap:9px}
+  .wordmark .dot{
+    width:30px;height:30px;border-radius:9px;background:var(--brand);color:#fff;
+    display:grid;place-items:center;font-size:17px;font-weight:800;flex:none;
+  }
+  @media (prefers-color-scheme: dark){ .wordmark .dot{color:#06231a} }
+  nav.links{display:flex;gap:26px;margin-left:auto}
+  nav.links a{color:var(--ink-2);font-weight:600;font-size:15px}
+  nav.links a:hover{color:var(--ink)}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;border:0;cursor:pointer;
+    font-family:"Manrope",sans-serif;font-weight:800;font-size:15.5px;
+    padding:12px 22px;border-radius:999px;background:var(--brand);color:#fff;
+    transition:transform .15s ease, background .15s ease;
+  }
+  @media (prefers-color-scheme: dark){ .btn{color:#06231a} }
+  .btn:hover{background:var(--brand-strong)}
+  .btn:active{transform:scale(.98)}
+  .btn.small{padding:9px 18px;font-size:14.5px}
+  .btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+  .btn.ghost:hover{border-color:var(--ink-3);background:transparent}
+  @media (max-width:720px){ nav.links{display:none} .topbar .btn{margin-left:auto} }
+
+  /* ---------- hero ---------- */
+  .hero{padding:64px 0 30px;position:relative;overflow:hidden}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+  @media (max-width:920px){ .hero-grid{grid-template-columns:1fr;gap:36px} .hero{padding-top:42px} }
+  .live-chip{
+    display:inline-flex;align-items:center;gap:8px;background:var(--pink-soft);color:var(--pink);
+    font-weight:800;font-size:13.5px;padding:6px 13px;border-radius:999px;margin-bottom:20px;
+  }
+  .live-chip .pulse{width:8px;height:8px;border-radius:50%;background:var(--pink);animation:pulse 1.8s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(226,19,110,.35)}70%{box-shadow:0 0 0 7px rgba(226,19,110,0)}100%{box-shadow:0 0 0 0 rgba(226,19,110,0)}}
+  @media (prefers-reduced-motion: reduce){ .live-chip .pulse{animation:none} html{scroll-behavior:auto} }
+  .hero h1{font-size:clamp(38px,5.4vw,58px);font-weight:800}
+  .hero h1 .pay{color:var(--brand)}
+  .hero .lede{font-size:19px;color:var(--ink-2);margin:20px 0 26px;max-width:34em}
+  .hero .lede strong{color:var(--ink)}
+  .hero-cta{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  .hero-points{display:flex;gap:8px 22px;flex-wrap:wrap;margin-top:26px;color:var(--ink-2);font-weight:600;font-size:15px}
+  .hero-points span{display:inline-flex;align-items:center;gap:7px}
+  .tick{color:var(--brand);font-weight:800}
+
+  /* hero visual: checkout + phone */
+  .stage{position:relative;display:flex;flex-direction:column}
+  .checkout-card{
+    background:var(--surface);border:1px solid var(--line);border-radius:22px;
+    box-shadow:var(--shadow);padding:22px;max-width:400px;width:100%;position:relative;z-index:2;
+  }
+  .checkout-card .co-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+  .checkout-card .co-head b{font-family:"Sora",sans-serif;font-size:16px}
+  .co-badge{background:var(--brand-soft);color:var(--brand);font-size:12px;font-weight:800;padding:4px 10px;border-radius:999px}
+  .co-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px dashed var(--line);font-size:15px;color:var(--ink-2)}
+  .co-row b{color:var(--ink)}
+  .co-pay{display:flex;align-items:center;gap:10px;background:var(--pink-soft);border-radius:12px;padding:11px 13px;margin:14px 0;font-weight:700;font-size:15px}
+  .co-pay .pm-logo{width:30px;height:30px;border-radius:8px;background:var(--pink);color:#fff;display:grid;place-items:center;font-family:"Sora",sans-serif;font-weight:800;font-size:14px;flex:none}
+  .co-field{border:1.5px solid var(--line);border-radius:12px;padding:10px 13px;font-family:"JetBrains Mono",monospace;font-size:14px;color:var(--ink-2);display:flex;justify-content:space-between}
+  .co-field b{color:var(--ink)}
+  .co-status{margin-top:14px;display:flex;align-items:center;gap:9px;font-weight:800;font-size:15px;color:var(--ok)}
+  .co-status .spin{width:16px;height:16px;border-radius:50%;border:2.5px solid var(--brand-soft);border-top-color:var(--brand);animation:spin 0.9s linear infinite;flex:none}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @media (prefers-reduced-motion: reduce){ .co-status .spin{animation:none} }
+  .phone-card{
+    position:relative;align-self:flex-end;width:264px;z-index:3;margin-top:-18px;margin-right:6px;
+    background:var(--surface);border:1px solid var(--line);border-radius:22px;
+    box-shadow:var(--shadow);padding:16px;
+  }
+  @media (max-width:520px){ .phone-card{width:100%;margin-top:16px;margin-right:0;align-self:stretch} .checkout-card{max-width:100%} }
+  .phone-card .ph-head{font-size:12.5px;font-weight:800;color:var(--ink-3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
+  .sms{background:var(--surface-2);border-radius:12px;padding:11px 12px;font-size:13.5px;line-height:1.5;color:var(--ink-2)}
+  .sms b{color:var(--ink)}
+  .sms .mono{font-family:"JetBrains Mono",monospace;font-size:12.5px}
+  .match-rows{margin-top:12px;display:grid;gap:7px;font-size:13.5px;font-weight:700}
+  .match-rows div{display:flex;justify-content:space-between;color:var(--ink-2)}
+  .match-rows .ok{color:var(--ok)}
+  .paid-banner{
+    margin-top:12px;background:var(--brand);color:#fff;border-radius:12px;text-align:center;
+    font-family:"Sora",sans-serif;font-weight:700;padding:9px;font-size:15px;
+  }
+  @media (prefers-color-scheme: dark){ .paid-banner{color:#06231a} }
+  .stage .float-tag{
+    position:absolute;top:-14px;right:8px;z-index:4;background:var(--accent);color:#3a2a04;
+    font-weight:800;font-size:13px;padding:7px 13px;border-radius:999px;box-shadow:var(--shadow-sm);
+    transform:rotate(2deg);
+  }
+  @media (max-width:520px){ .stage .float-tag{top:-10px} }
+
+  /* demo stepper */
+  .demo-bar{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px;max-width:380px}
+  .demo-step{flex:1;min-width:100px;text-align:center;font-size:12.5px;font-weight:700;color:var(--ink-3);padding-top:9px;border-top:3px solid var(--line);transition:all .3s}
+  .demo-step.on{color:var(--brand);border-top-color:var(--brand)}
+
+  /* ---------- sections ---------- */
+  section.block{padding:64px 0}
+  section.block.alt{background:var(--bg-soft)}
+  .sec-head{max-width:640px;margin-bottom:38px}
+  .sec-head h2{font-size:clamp(27px,3.6vw,36px);font-weight:700;margin-bottom:12px}
+  .sec-head p{color:var(--ink-2);font-size:17px}
+
+  /* methods */
+  .methods{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  @media (max-width:820px){ .methods{grid-template-columns:repeat(2,1fr)} }
+  .method{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px;display:flex;align-items:center;gap:13px;
+  }
+  .method .m-logo{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-family:"Sora",sans-serif;font-weight:800;color:#fff;font-size:16px;flex:none}
+  .method b{display:block;font-size:16px;line-height:1.3}
+  .method .st{font-size:12.5px;font-weight:800}
+  .st.live{color:var(--ok)}
+  .st.soon{color:var(--ink-3)}
+
+  /* steps */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;counter-reset:step}
+  @media (max-width:980px){ .steps{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:560px){ .steps{grid-template-columns:1fr} }
+  .step{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px;position:relative}
+  .step .num{
+    width:38px;height:38px;border-radius:50%;background:var(--brand-soft);color:var(--brand);
+    display:grid;place-items:center;font-family:"Sora",sans-serif;font-weight:800;font-size:17px;margin-bottom:14px;
+  }
+  .step h3{font-size:17.5px;margin-bottom:8px}
+  .step p{color:var(--ink-2);font-size:15px}
+  .step p b{color:var(--ink)}
+
+  /* verify flow */
+  .flow{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:12px;align-items:stretch}
+  @media (max-width:860px){ .flow{grid-template-columns:1fr} .flow .arrow{transform:rotate(90deg);justify-self:center} }
+  .flow-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px}
+  .flow-card h3{font-size:16.5px;margin-bottom:7px}
+  .flow-card p{color:var(--ink-2);font-size:14.5px}
+  .flow-card .tag{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--brand);background:var(--brand-soft);padding:3px 9px;border-radius:999px;margin-bottom:11px}
+  .flow .arrow{align-self:center;font-size:22px;color:var(--ink-3);font-weight:800}
+
+  /* features split */
+  .split{display:grid;grid-template-columns:.85fr 1.15fr;gap:48px}
+  @media (max-width:860px){ .split{grid-template-columns:1fr;gap:26px} }
+  .feat-list{display:grid;gap:0}
+  .feat{display:flex;gap:16px;padding:20px 0;border-bottom:1px solid var(--line)}
+  .feat:first-child{padding-top:2px}
+  .feat:last-child{border-bottom:0}
+  .feat .ic{width:44px;height:44px;border-radius:13px;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center;flex:none}
+  .feat .ic svg{width:22px;height:22px}
+  .feat h3{font-size:17px;margin-bottom:4px}
+  .feat p{color:var(--ink-2);font-size:15px}
+
+  /* two ways */
+  .ways{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media (max-width:820px){ .ways{grid-template-columns:1fr} }
+  .way{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:26px}
+  .way h3{font-size:19px;margin-bottom:9px}
+  .way p{color:var(--ink-2);font-size:15.5px;margin-bottom:14px}
+  .way ul{margin:0;padding:0;list-style:none;display:grid;gap:8px;font-size:15px;color:var(--ink-2)}
+  .way ul li{display:flex;gap:9px}
+  .codebox{
+    background:#0d1f18;color:#c9f2da;border-radius:12px;padding:15px 16px;
+    font-family:"JetBrains Mono",monospace;font-size:13px;line-height:1.65;overflow-x:auto;white-space:pre;
+  }
+  @media (prefers-color-scheme: dark){ .codebox{background:#081009;border:1px solid var(--line)} }
+  .codebox .k{color:#f2b63d}
+
+  /* signup */
+  .signup-card{
+    background:var(--brand-strong);color:#eafaf0;border-radius:26px;padding:44px 40px;
+    display:grid;grid-template-columns:1.2fr .8fr;gap:36px;align-items:center;
+  }
+  @media (prefers-color-scheme: dark){ .signup-card{background:#123324} }
+  @media (max-width:820px){ .signup-card{grid-template-columns:1fr;padding:32px 24px} }
+  .signup-card h2{font-size:clamp(25px,3.4vw,33px);color:#fff;margin-bottom:12px}
+  .signup-card p{color:#c4e6d0;font-size:16.5px}
+  .signup-card .note-box{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:20px}
+  .signup-card .note-box b{color:#fff;display:block;margin-bottom:6px;font-family:"Sora",sans-serif}
+  .signup-card .note-box p{font-size:15px}
+  .pill-soon{display:inline-block;background:var(--accent);color:#3a2a04;font-weight:800;font-size:13px;padding:5px 12px;border-radius:999px;margin-bottom:16px}
+
+  /* faq */
+  .faq{max-width:760px}
+  details{border-bottom:1px solid var(--line);padding:16px 0}
+  details summary{font-family:"Sora",sans-serif;font-weight:600;font-size:16.5px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:14px}
+  details summary::-webkit-details-marker{display:none}
+  details summary::after{content:"+";color:var(--brand);font-size:22px;line-height:1}
+  details[open ] summary::after{content:"–"}
+  details p{color:var(--ink-2);font-size:15.5px;margin-top:9px;max-width:44em}
+
+  footer{border-top:1px solid var(--line);padding:38px 0 46px;background:var(--bg-soft)}
+  .foot{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start;justify-content:space-between}
+  .foot .tagline{color:var(--ink-2);font-size:15px;max-width:30em;margin-top:8px}
+  .foot nav{display:flex;gap:22px;flex-wrap:wrap}
+  .foot nav a{color:var(--ink-2);font-weight:600;font-size:14.5px}
+  .foot .fine{width:100%;color:var(--ink-3);font-size:13.5px;margin-top:14px}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="wordmark" href="#top"><span class="dot">S</span>SarahPay</a>
+    <nav class="links" aria-label="Main">
+      <a href="#how">How it works</a>
+      <a href="#methods">Payment methods</a>
+      <a href="#features">Features</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn small" href="#signup">Get started</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <div class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="live-chip"><span class="pulse"></span> bKash payments live today</span>
+        <h1>SarahPay — get paid on your website, <span class="pay">the simple way.</span></h1>
+        <p class="lede">SarahPay lets your business accept <strong>bKash, Nagad and more</strong> on your website or app — with <strong>no API key and no merchant account needed</strong>. Your customers pay with the wallet they already use, and every payment confirms itself.</p>
+        <div class="hero-cta">
+          <a class="btn" href="#signup">Get started</a>
+          <a class="btn ghost" href="#how">See how it works</a>
+        </div>
+        <div class="hero-points">
+          <span><span class="tick">✓</span> Free merchant account</span>
+          <span><span class="tick">✓</span> Your own bKash number</span>
+          <span><span class="tick">✓</span> Auto-verified payments</span>
+        </div>
+      </div>
+
+      <div class="stage" aria-label="Illustration of a SarahPay checkout being verified automatically">
+        <span class="float-tag">No merchant account needed</span>
+        <div class="checkout-card">
+          <div class="co-head"><b>Checkout</b><span class="co-badge">SarahPay</span></div>
+          <div class="co-row"><span>Order total</span><b>৳ 850.00</b></div>
+          <div class="co-row"><span>Pay with</span><b>bKash Send Money</b></div>
+          <div class="co-pay"><span class="pm-logo">b</span> Send ৳850 to the number shown, then enter your TrxID below.</div>
+          <div class="co-field"><span>TrxID</span><b id="demoTrx">9HX7K2LM4P</b></div>
+          <div class="co-status" id="demoStatus"><span class="spin" id="demoSpin"></span><span id="demoStatusText">Checking payment…</span></div>
+          <div class="demo-bar" aria-hidden="true">
+            <div class="demo-step" data-step="0">Customer pays</div>
+            <div class="demo-step" data-step="1">SMS arrives</div>
+            <div class="demo-step" data-step="2">Matched &amp; paid</div>
+          </div>
+        </div>
+        <div class="phone-card">
+          <div class="ph-head">Merchant's phone · SMS checker</div>
+          <div class="sms"><b>bKash:</b> You have received Tk 850.00 from 01712-XXXXXX. <span class="mono">TrxID 9HX7K2LM4P</span></div>
+          <div class="match-rows">
+            <div><span>TrxID</span><span class="ok">Matched ✓</span></div>
+            <div><span>Amount ৳850</span><span class="ok">Matched ✓</span></div>
+            <div><span>Sender number</span><span class="ok">Matched ✓</span></div>
+          </div>
+          <div class="paid-banner">Payment marked PAID ✓</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ METHODS ============ -->
+  <section class="block" id="methods" style="padding-top:34px">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>The wallets your customers already have</h2>
+        <p>bKash works on SarahPay today. The rest are on the way — each one will plug into the same checkout, the same way.</p>
+      </div>
+      <div class="methods">
+        <div class="method"><span class="m-logo" style="background:#e2136e">b</span><div><b>bKash</b><span class="st live">● Live — works today</span></div></div>
+        <div class="method"><span class="m-logo" style="background:#f6921e">N</span><div><b>Nagad</b><span class="st soon">Coming soon</span></div></div>
+        <div class="method"><span class="m-logo" style="background:#8c3494">R</span><div><b>Rocket</b><span class="st soon">Coming soon</span></div></div>
+        <div class="method"><span class="m-logo" style="background:#00b14f">U</span><div><b>Upay</b><span class="st soon">Coming soon</span></div></div>
+        <div class="method"><span class="m-logo" style="background:#ed1c24">M</span><div><b>MCash</b><span class="st soon">Coming soon</span></div></div>
+        <div class="method"><span class="m-logo" style="background:#5b2d8e">T</span><div><b>TAP</b><span class="st soon">Coming soon</span></div></div>
+        <div class="method"><span class="m-logo" style="background:#d6006d">P</span><div><b>Pathao Pay</b><span class="st soon">Coming soon</span></div></div>
+        <div class="method"><span class="m-logo" style="background:#009444">C</span><div><b>Cellfin</b><span class="st soon">Coming soon</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section class="block alt" id="how">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>How it works</h2>
+        <p>From signup to your first confirmed payment in four steps — no paperwork, no bank-side merchant account, no waiting for API approval.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="num">1</div>
+          <h3>Create a free merchant account</h3>
+          <p>Sign up with your business name and phone number. Your merchant account is <b>free</b> and takes minutes — that's the whole application.</p>
+        </div>
+        <div class="step">
+          <div class="num">2</div>
+          <h3>Add your bKash number</h3>
+          <p>Tell SarahPay the <b>bKash number</b> your customers should send money to — your regular personal or agent number works. Nagad, Rocket and more will be added the same way.</p>
+        </div>
+        <div class="step">
+          <div class="num">3</div>
+          <h3>Get your API key — or just share your checkout link</h3>
+          <p>Developers can plug in with an <b>API key</b>. No website code? Every merchant also gets a ready-made <b>checkout link</b> to share anywhere — a page, a post, a message.</p>
+        </div>
+        <div class="step">
+          <div class="num">4</div>
+          <h3>Get paid — verified automatically</h3>
+          <p>Your customer pays by <b>bKash Send Money</b> and enters the <b>TrxID</b> at checkout. Our SMS checker matches the TrxID, amount and sender, and marks the payment <b>paid automatically</b>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VERIFICATION FLOW ============ -->
+  <section class="block">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>How a payment confirms itself</h2>
+        <p>Normally, someone has to open the bKash app, find the SMS and check every payment by hand. SarahPay does that checking for you.</p>
+      </div>
+      <div class="flow">
+        <div class="flow-card">
+          <span class="tag">Customer</span>
+          <h3>Pays &amp; enters the TrxID</h3>
+          <p>The customer sends money to your bKash number with Send Money, then types the transaction ID from their confirmation SMS into your checkout.</p>
+        </div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="flow-card">
+          <span class="tag">SMS checker app</span>
+          <h3>Reads the bKash SMS on your phone</h3>
+          <p>A small Android app on your phone reads the incoming bKash SMS and securely forwards it to SarahPay the moment the money lands.</p>
+        </div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="flow-card">
+          <span class="tag">SarahPay</span>
+          <h3>Matches three things, marks it paid</h3>
+          <p>TrxID, amount and sender number must all match the pending order. When they do, the payment flips to <b>paid</b> — no manual checking, no screenshots to review.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FEATURES ============ -->
+  <section class="block alt" id="features">
+    <div class="wrap split">
+      <div class="sec-head" style="margin-bottom:0">
+        <h2>Built for businesses that sell online in Bangladesh</h2>
+        <p>Most small businesses here collect money on a personal bKash number and confirm orders from SMS screenshots. SarahPay keeps that habit — and removes the manual work around it.</p>
+      </div>
+      <div class="feat-list">
+        <div class="feat">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="4.5"/><path d="M11 12l9.5-9.5"/><path d="M15.5 7.5l3 3"/><path d="M18.5 4.5l2 2"/></svg></span>
+          <div>
+            <h3>No API key needed to start</h3>
+            <p>Your checkout link works on its own — share it and start taking payments. The API key is there when you want a deeper integration, not a gate you have to pass first.</p>
+          </div>
+        </div>
+        <div class="feat">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8.5 10.5l2.5 2.5 4.5-4.5"/></svg></span>
+          <div>
+            <h3>Auto-verified by bKash SMS</h3>
+            <p>An Android app on your phone reads each incoming bKash SMS and forwards it to SarahPay. Payments verify themselves against the real SMS — not against a screenshot a customer could edit.</p>
+          </div>
+        </div>
+        <div class="feat">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6"/></svg></span>
+          <div>
+            <h3>No merchant account required</h3>
+            <p>Money goes straight to your own bKash number by Send Money. There's no merchant account to open and no settlement account to wait for — the money is already yours when it arrives.</p>
+          </div>
+        </div>
+        <div class="feat">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span>
+          <div>
+            <h3>Confirmed in moments, not hours</h3>
+            <p>As soon as the SMS lands and the three checks match, your order shows as paid. You pack and ship with confidence instead of re-checking your balance between orders.</p>
+          </div>
+        </div>
+        <div class="feat">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15" r="1.6"/></svg></span>
+          <div>
+            <h3>A TrxID can only be used once</h3>
+            <p>Each transaction ID is tied to one order and one amount. The same TrxID can't be replayed against a second order, and a mismatched amount never confirms.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TWO WAYS ============ -->
+  <section class="block">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Two ways to take payments</h2>
+        <p>Pick the one that fits how you sell today. You can switch or use both.</p>
+      </div>
+      <div class="ways">
+        <div class="way">
+          <h3>Checkout link — no code at all</h3>
+          <p>Every merchant gets a hosted checkout page. Put the link on your Facebook page, in your bio, or send it in chat.</p>
+          <ul>
+            <li><span class="tick">✓</span> Works with any page, shop or social profile</li>
+            <li><span class="tick">✓</span> Customer pays and enters the TrxID on the page</li>
+            <li><span class="tick">✓</span> You see the payment marked paid in your dashboard</li>
+          </ul>
+        </div>
+        <div class="way">
+          <h3>API key — for your own website or app</h3>
+          <p>Create checkout sessions from your server and hear back the moment a payment verifies.</p>
+          <div class="codebox"><span class="k">POST</span> /v1/checkouts
+api_key: sp_live_••••••••••
+
+{ "amount": 850, "method": "bkash" }
+<span style="color:#8fd6ab">→ 201 { "checkout_url": "…" }</span>
+<span style="color:#8fd6ab">→ webhook: payment.paid ✓</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SIGNUP ============ -->
+  <section class="block" id="signup" style="padding-top:10px">
+    <div class="wrap">
+      <div class="signup-card">
+        <div>
+          <span class="pill-soon">Opening soon</span>
+          <h2>Merchant signup opens soon</h2>
+          <p>SarahPay is live with its first merchant today, and we're finishing the self-serve signup before opening the doors to everyone. When signup opens, creating your free merchant account will start right here.</p>
+        </div>
+        <div class="note-box">
+          <b>Already running, in the real world</b>
+          <p>The first live SarahPay merchant is a mosque donation gateway — donors pay by bKash, and every donation is verified automatically by SMS and recorded without anyone checking payments by hand.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="block" id="faq" style="padding-top:16px">
+    <div class="wrap">
+      <div class="sec-head"><h2>Questions</h2></div>
+      <div class="faq">
+        <details>
+          <summary>Do I need a bKash merchant account?</summary>
+          <p>No. Customers pay your regular bKash number using Send Money, so there's no merchant account to apply for. The money lands in your own wallet, as it does today.</p>
+        </details>
+        <details>
+          <summary>How does SarahPay know a payment really happened?</summary>
+          <p>A small SMS checker app on your Android phone forwards each incoming bKash SMS to SarahPay. When a customer enters a TrxID at checkout, we match it against that SMS — TrxID, amount and sender number all have to agree before the payment is marked paid.</p>
+        </details>
+        <details>
+          <summary>Do I need a website or an API key?</summary>
+          <p>Neither. Every merchant gets a checkout link that works on its own — share it anywhere. If you do have a website or app, you can use your API key to create checkouts and receive a webhook when a payment is paid.</p>
+        </details>
+        <details>
+          <summary>Which payment methods can I accept?</summary>
+          <p>bKash works today. Nagad, Rocket, Upay, MCash, TAP, Pathao Pay and Cellfin are in progress and will join the same checkout as they launch.</p>
+        </details>
+        <details>
+          <summary>When can I create my merchant account?</summary>
+          <p>Self-serve signup opens soon. SarahPay is already processing real payments for its first merchant — a mosque donation gateway — while we finish the public signup.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <a class="wordmark" href="#top"><span class="dot">S</span>SarahPay</a>
+      <p class="tagline">SarahPay — accept payments on your website &amp; app, auto-verified by bKash SMS.</p>
+    </div>
+    <nav aria-label="Footer">
+      <a href="#how">How it works</a>
+      <a href="#methods">Payment methods</a>
+      <a href="#features">Features</a>
+      <a href="#signup">Get started</a>
+    </nav>
+    <p class="fine">Made for businesses in Bangladesh. bKash, Nagad, Rocket, Upay, MCash, TAP, Pathao Pay and Cellfin are trademarks of their respective owners; SarahPay is an independent service.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // Hero demo: cycle the verification states so visitors see the flow.
+  var steps = document.querySelectorAll('.demo-step');
+  var statusText = document.getElementById('demoStatusText');
+  var spin = document.getElementById('demoSpin');
+  var states = [
+    { text: 'Customer paid — TrxID entered', spin: true },
+    { text: 'SMS received — matching TrxID, amount, sender…', spin: true },
+    { text: 'Verified — payment marked PAID ✓', spin: false }
+  ];
+  var i = 0, timer = null;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function show(n){
+    steps.forEach(function(el, idx){ el.classList.toggle('on', idx <= n); });
+    if (statusText) statusText.textContent = states[n].text;
+    if (spin) spin.style.display = states[n].spin ? '' : 'none';
+  }
+  if (reduce) { show(2); return; }
+  show(0);
+  timer = setInterval(function(){ i = (i + 1) % states.length; show(i); }, 2200);
+  document.addEventListener('visibilitychange', function(){
+    if (document.hidden) { clearInterval(timer); timer = null; }
+    else if (!timer) { timer = setInterval(function(){ i = (i + 1) % states.length; show(i); }, 2200); }
+  });
+})();
+</script>
+</body>
+</html>
